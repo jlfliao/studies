@@ -20,6 +20,10 @@ export const AllItems = (props) => {
     setOptionSelected(selected);
   };
 
+  const handleSubmit = async () => {
+    // const { data } = await axios.post(`/api/items`, item);
+  };
+
   const studyOptions = items.map((item) => {
     return {
       value: item.title,
