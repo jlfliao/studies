@@ -8,8 +8,6 @@ export const AllItems = (props) => {
   const [optionSelected, setOptionSelected] = useState([]);
 
   useEffect(() => {
-    // once component is mounted, get our list of items
-    console.log('using useEffect');
     const fetchData = async () => {
       const { data } = await axios.get(`/api/items`);
       setItems(data);
