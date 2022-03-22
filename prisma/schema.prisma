@@ -10,7 +10,6 @@ generator client {
   provider        = "prisma-client-js"
 }
 
-// Group represents organizations, e.g. Feed the People
 model Study {
   id                Int       @unique @default(autoincrement())
   title              String?
@@ -18,4 +17,9 @@ model Study {
   url                String?
   locations          String?
   tnterventions      String?
+}
+
+model Country {
+  id                Int       @unique @default(autoincrement())
+  name              String?
 }

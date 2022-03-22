@@ -2,6 +2,7 @@
 
 const router = require('express').Router();
 
+router.use('/countries', require('./countries'));
 router.use('/items', require('./items'));
 
 router.use((req, res, next) => {
