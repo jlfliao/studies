@@ -19,8 +19,6 @@ export const AllItems = (props) => {
   }, []);
 
   const handleChange = (selected) => {
-    console.log('handleChangeSelectedOoption: ', selected);
-
     setOptionSelected(selected);
   };
 
