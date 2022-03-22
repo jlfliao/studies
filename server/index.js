@@ -2,6 +2,10 @@ const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 const app = express();
+<<<<<<< HEAD
+=======
+const db = require('./db/index');
+>>>>>>> e4fcf42e56e667dd3b6e6f12d90a51f0f9e313fd
 
 // body parsing middleware
 app.use(express.json());
@@ -24,6 +28,11 @@ app.use((err, req, res, next) => {
 
 const initApp = async () => {
   try {
+<<<<<<< HEAD
+=======
+    await db.sync();
+
+>>>>>>> e4fcf42e56e667dd3b6e6f12d90a51f0f9e313fd
     app.listen(PORT, () => {
       console.log(`Listening on port ${PORT}`);
     });
