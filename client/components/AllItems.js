@@ -38,7 +38,7 @@ export const AllItems = (props) => {
 
   const handleViewStudies = () => {
     if (optionSelected.length > 0) {
-      setDisplayTable(true);
+      setDisplayTable(!displayTable);
       setDisplayHeatmap(false);
     } else {
       alert('Please select at least 1 study');
@@ -61,30 +61,83 @@ export const AllItems = (props) => {
   );
 
   return (
-    <div>
-      <button onClick={handleSubmit}>
-        {displayHeatmap ? 'Back' : 'Submit'}
-      </button>
-      <button onClick={handleViewStudies}>View Selected Studies</button>
+    <div
+      style={{
+        width: '100%',
+        backgroundColor: '#F5F5F5',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyItems: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: '90%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+        }}
+      >
+        <button
+          onClick={handleSubmit}
+          style={{
+            backgroundColor: '#c3272b',
+            borderRadius: '10px',
+            height: '50px',
+            width: 'auto',
+            color: 'white',
+            fontSize: '1rem',
+            padding: '1rem',
+            marginRight: '0.5rem',
+            fontWeight: 'bold',
+            marginRight: '1rem',
+            paddingLeft: '25px',
+            paddingRight: '25px',
+          }}
+        >
+          {displayHeatmap ? 'Back' : 'Submit'}
+        </button>
+        <button
+          onClick={handleViewStudies}
+          style={{
+            backgroundColor: 'white',
+            borderRadius: '10px',
+            color: '#c3272b',
+            padding: '1rem',
+            paddingLeft: '30px',
+            paddingRight: '30px',
+            fontSize: '1rem',
+            height: '50px',
+            width: 'auto',
+            fontWeight: 'bold',
+          }}
+        >
+          {displayTable ? 'Back' : 'View Selected Studies'}
+        </button>
+      </div>
       <br />
-      <div>
+      <div style={{ width: '90%' }}>
         {displayHeatmap ? (
           <Heatmap />
         ) : displayTable ? (
           <Table selectedStudies={selectedStudiesTableArray} />
         ) : (
-          <ReactSelect
-            options={studyOptions}
-            isMulti
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-            components={{
-              Option,
-            }}
-            onChange={handleChange}
-            allowSelectAll={true}
-            value={optionSelected}
-          />
+          <div style={{ paddingBottom: '1rem' }}>
+            <ReactSelect
+              options={studyOptions}
+              isMulti
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              components={{
+                Option,
+              }}
+              onChange={handleChange}
+              allowSelectAll={true}
+              value={optionSelected}
+            />
+          </div>
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import React from 'react';
 const Table = (props) => {
   const { selectedStudies } = props;
   return (
-    <table>
+    <table style={{ border: '1px solid black', backgroundColor: 'white' }}>
       <tbody>
         <tr>
           <th>ID</th>
