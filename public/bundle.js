@@ -149,8 +149,7 @@ var AllItems = function AllItems(props) {
   var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState8 = _slicedToArray(_useState7, 2),
       displayTable = _useState8[0],
-      setDisplayTable = _useState8[1]; // console.log('options selected: ', optionSelected);
-
+      setDisplayTable = _useState8[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var fetchData = /*#__PURE__*/function () {
@@ -267,7 +266,9 @@ var AllItems = function AllItems(props) {
     style: {
       width: '90%'
     }
-  }, displayHeatmap ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Heatmap__WEBPACK_IMPORTED_MODULE_4__["default"], null) : displayTable ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Table__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, displayHeatmap ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Heatmap__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    optionSelected: optionSelected
+  }) : displayTable ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Table__WEBPACK_IMPORTED_MODULE_5__["default"], {
     selectedStudies: selectedStudiesTableArray
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
@@ -331,6 +332,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_grid_heatmap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-grid-heatmap */ "./node_modules/react-grid-heatmap/dist/index.modern.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -352,12 +361,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var xLabels = ['Criteria A', 'Criteria B', 'Criteria C', 'Criteria D'];
 
-var Heatmap = function Heatmap() {
+var Heatmap = function Heatmap(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]),
       _useState2 = _slicedToArray(_useState, 2),
       countries = _useState2[0],
       setCountries = _useState2[1];
 
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      selectedCountries = _useState4[0],
+      setSelectedCountries = _useState4[1];
+
+  var optionSelected = props.optionSelected;
+  console.log('option: ', optionSelected.length);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var fetchData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -391,35 +407,101 @@ var Heatmap = function Heatmap() {
     fetchData();
   }, []);
   var yLabels = countries.filter(function (country) {
-    return country.id > Math.random() * 16;
+    return country.id > optionSelected.length;
   }).map(function (country) {
     return country.name;
   });
-  var data = new Array(yLabels.length).fill(0).map(function () {
-    return new Array(xLabels.length).fill(0).map(function () {
-      return Math.floor(Math.random() * 50 + 50);
+  var data = new Array(yLabels.length).fill(0).map(function (q, e, w) {
+    return new Array(xLabels.length).fill(0).map(function (a, b, c) {
+      // console.log('a: ', a, 'b: ', b, 'c: ', c);
+      // console.log('q: ', q, 'w: ', w, 'e: ', e);
+      var fakeRandomNum = yLabels[e].length;
+      var fakeRandomNumB = fakeRandomNum + b;
+      var fakeRandomNumC = fakeRandomNum + 2 * b; // console.log('b: ', b);
+      // console.log('fakeRandom: ', fakeRandomNum);
+      // console.log('fakeRandomB: ', fakeRandomNumB);
+
+      if (fakeRandomNum % 2 === 1) {
+        return Math.floor(fakeRandomNum / fakeRandomNumC * 50 + 50);
+      } else if (fakeRandomNum <= 5) {
+        return Math.floor(fakeRandomNum / optionSelected.length * 50 + 50);
+      } else {
+        return Math.floor(fakeRandomNum / fakeRandomNumB * 50 + 50);
+      }
     });
   });
 
   var color = function color(_x, _y, ratio) {
-    if (ratio > 0.5) {
-      return {
-        background: "rgb(0, 255, 0, ".concat(ratio, ")"),
-        fontSize: '1rem',
-        color: "rgb(0, 0, 0, ".concat(ratio, ")")
-      };
+    if (yLabels.length % 1 === 0 && _x % 2 === 1) {
+      if (ratio > 0.6) {
+        return {
+          background: "rgb(0, 255, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
+
+      if (ratio < 0.6 && ratio > 0.4) {
+        return {
+          background: "rgb(255, 255, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
+
+      if (ratio < 0.4) {
+        return {
+          background: "rgb(255, 0, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
     } else {
-      return {
-        background: "rgb(255, 0, 0, ".concat(ratio, ")"),
-        fontSize: '1rem',
-        color: "rgb(0, 0, 0, ".concat(ratio, ")")
-      };
+      if (ratio > 0.6) {
+        return {
+          background: "rgb(255, 0, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
+
+      if (ratio < 0.6 && ratio > 0.4) {
+        return {
+          background: "rgb(0, 255, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
+
+      if (ratio < 0.4) {
+        return {
+          background: "rgb(255, 255, 0, ".concat(ratio, ")"),
+          fontSize: '1rem',
+          color: "rgb(0, 0, 0, ".concat(ratio, ")")
+        };
+      }
     }
+  };
+
+  var selectCountryHandler = function selectCountryHandler(countryName) {
+    var updatedList;
+
+    if (selectedCountries.includes(countryName)) {
+      updatedList = selectedCountries.filter(function (selectedCountry) {
+        return selectedCountry !== countryName;
+      });
+    } else {
+      updatedList = [].concat(_toConsumableArray(selectedCountries), [countryName]);
+    }
+
+    setSelectedCountries(updatedList);
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, yLabels.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
-      width: '100%'
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_grid_heatmap__WEBPACK_IMPORTED_MODULE_1__["HeatMapGrid"], {
     data: data,
@@ -448,11 +530,35 @@ var Heatmap = function Heatmap() {
     },
     cellStyle: color,
     cellHeight: "3.5rem",
-    xLabelsPos: "top" // onClick={(x, y) => alert(`Clicked (${x}, ${y})`)}
-    ,
+    xLabelsPos: "top",
+    onClick: function onClick(x, y) {
+      return selectCountryHandler(yLabels[x]);
+    },
     yLabelsPos: "left",
     square: true
-  })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No criteria provided."));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      marginLeft: '5rem'
+    }
+  }, "Selected Countries:", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    style: {
+      backgroundColor: 'white',
+      color: '#c3272b'
+    },
+    onClick: function onClick() {
+      if (selectedCountries.length > 0) {
+        alert('Your selections have been submitted.');
+      } else {
+        alert('Please select at least one country to submit.');
+      }
+    }
+  }, "Submit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      marginTop: '1rem'
+    }
+  }, selectedCountries.length > 0 ? selectedCountries.map(function (countryName) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, countryName);
+  }) : 'Click on a row to select a country'))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No criteria provided."));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Heatmap);

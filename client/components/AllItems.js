@@ -11,8 +11,6 @@ export const AllItems = (props) => {
   const [displayHeatmap, setDisplayHeatmap] = useState(false);
   const [displayTable, setDisplayTable] = useState(false);
 
-  // console.log('options selected: ', optionSelected);
-
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(`/api/items`);
@@ -120,7 +118,7 @@ export const AllItems = (props) => {
       <br />
       <div style={{ width: '90%' }}>
         {displayHeatmap ? (
-          <Heatmap />
+          <Heatmap optionSelected={optionSelected} />
         ) : displayTable ? (
           <Table selectedStudies={selectedStudiesTableArray} />
         ) : (
